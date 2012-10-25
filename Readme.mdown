@@ -1,0 +1,49 @@
+My and [kangax](https://github.com/kangax)’s idea for [Node.js Knockout](http://nodeknockout.com/):
+
+## Auto-gathered compatibility tables of browser features
+
+[caniuse.com](http://caniuse.com/) is nice but you still have to write all tests manually. I’d like to automate it by taking slightly different approach: collect serialised window objects of all people visiting the website. This way we get always up to date data.
+
+How would it look like?
+
+dom-dom-dom.com/Object.getOwnPropertyNames shows:  
+function: Chrome 5+, Firefox 4+, IE 9+, Opera 12+, Safari 5+
+
+dom-dom-dom.com/document.body.style.boxShadow shows:  
+string: Chrome 10+, Firefox 4+, IE 9+, Opera 10.5+, Safari 5.1+
+
+dom-dom-dom.com/window (the same as dom-dom-dom.com/) lists all its proporties:
+
+- **ArrayBuffer**
+  - function: Chrome 7+, Firefox 4+, IE 10+, Opera 11.6+, Safari 5.1+
+- **document**
+  - object: all browsers
+    - [+] expand
+- ...
+- **webkitURL** 
+  - object: Chrome 10+, Safari 5.1+
+
+##TODO
+
+### Front-end
+
+Write window to JSON serializer. [How to serialize DOM node to JSON?](http://stackoverflow.com/questions/2303713/how-to-serialize-dom-node-to-json)
+
+### Back-end
+
+#### DB and Schema Design
+
+MongoDB allows to store and query JS objects, would probably use it.
+
+**We really need back-end dev! Join [the team](http://nodeknockout.com/teams/cloud-sausage)!**
+
+#### Parse user agent
+
+- <http://browserscope2.org/ua>
+- [3rd-Eden/useragent](https://github.com/3rd-Eden/useragent)
+
+## By the way
+
+I have dom-dom-dom.com domain. It’s the best name I could came up with but I still don’t like it very much.
+
+I want to build a long-running project. I’m going to maintain it after Node Knockout. I have had the idea for more than 2 years. Node KO is just a kick to start working on it.
