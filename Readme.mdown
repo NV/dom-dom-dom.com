@@ -29,18 +29,112 @@ dom-dom-dom.com/window (the same as dom-dom-dom.com/) lists all its proporties:
 
 Write window to JSON serializer. [How to serialize DOM node to JSON?](http://stackoverflow.com/questions/2303713/how-to-serialize-dom-node-to-json)
 
+Send data to the server in the following format:
+
+```javascript
+{
+	userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.5 Safari/537.17",
+	window: {
+		ArrayBuffer: {
+			$type: "function",
+			arguments: "null",
+			caller: "null",
+			length: "number",
+			name: "string",
+			prototype: {
+				$type: "object",
+				constructor: {$type: "link", keys: ["ArrayBuffer"]},
+				slice: {
+					$type: "function",
+					arguments: "null",
+					caller: "null",
+					length: "number",
+					name: "string",
+					prototype: {
+						$type: "object",
+						constructor: {$type: "link", keys: ["ArrayBuffer", "prototype", "slice"]}
+					}
+				}
+			}
+		}
+	}
+}
+```
+
+"null", "string", "number", "boolean", "undefined" are primitive types, they don’t have children. "function" "object", "array" do.
+
+"link" type has an absolute path in its "keys" field.
+
 ### Back-end
 
-#### DB and Schema Design
+#### MongoDB Schema
 
-MongoDB allows to store and query JS objects, would probably use it.
+One MongoDB collection:
 
-**We really need back-end dev! Join [the team](http://nodeknockout.com/teams/cloud-sausage)!**
+```javascript
+[
+	{
+		_id: 'ArrayBuffer',
+		types: {
+			function: [
+				{family: 'Chrome', major: 24, minor: 0, patch: 1312}
+				// more browsers
+			]
+		},
+		children: [/* … */]
+	},
+
+	{
+		_id: 'document',
+		types: {
+			'object': [
+				{family: 'Firefox', major: 24, minor: 0}
+				// …
+			]
+		},
+		children: {
+			URL: {
+				types: {
+					'string': []
+				},
+				children: []
+			},
+			activeElement: {
+				types: {
+					object: [/* ... */]
+				},
+				children: {
+					/* All the way down to the rabbit hole */
+				}
+			}
+		}
+	},
+	
+	{
+		_id: 'window',
+		types: {
+			link: {
+				{family: 'Chrome', major: 24, minor: 0, patch: 1312, value: '/'}
+			}
+		}
+	}
+]
+```
+
+Some collection items such as `document` might be several megabytes big. Let’s see how it’s going to work out.
+
 
 #### Parse user agent
 
-- <http://browserscope2.org/ua>
-- [3rd-Eden/useragent](https://github.com/3rd-Eden/useragent)
+[tobie/ua-parser](https://github.com/tobie/ua-parser). Borrow [browserized version from Modernizr](http://modernizr.github.com/Modernizr/modernizr-git/test/js/lib/uaparser.js).
+
+    uaparse(navigator.userAgent)
+    > UserAgent {
+      family: "Chrome",
+      major: 24,
+	  minor: 0,
+	  patch: 1312
+	}
 
 ## By the way
 
