@@ -58,7 +58,8 @@ Send data to the server in the following format:
 					}
 				}
 			}
-		}
+		},
+		// ...
 	}
 }
 ```
