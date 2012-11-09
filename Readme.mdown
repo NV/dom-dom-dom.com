@@ -29,6 +29,8 @@ dom-dom-dom.com/window (the same as dom-dom-dom.com/) lists all its proporties:
 
 Write window to JSON serializer. [How to serialize DOM node to JSON?](http://stackoverflow.com/questions/2303713/how-to-serialize-dom-node-to-json)
 
+#### Submiting data
+
 Send data to the server in the following format:
 
 ```javascript
@@ -65,6 +67,7 @@ Send data to the server in the following format:
 
 "link" type has an absolute path in its "keys" field.
 
+
 ### Back-end
 
 #### MongoDB Schema
@@ -81,7 +84,7 @@ One MongoDB collection:
 				// more browsers
 			]
 		},
-		children: [/* … */]
+		children: {/* … */}
 	},
 
 	{
@@ -97,7 +100,7 @@ One MongoDB collection:
 				types: {
 					'string': []
 				},
-				children: []
+				children: {}
 			},
 			activeElement: {
 				types: {
@@ -109,19 +112,60 @@ One MongoDB collection:
 			}
 		}
 	},
-	
+
 	{
 		_id: 'window',
 		types: {
-			link: {
+			link: [
 				{family: 'Chrome', major: 24, minor: 0, patch: 1312, value: '/'}
-			}
+			]
 		}
 	}
 ]
 ```
 
 Some collection items such as `document` might be several megabytes big. Let’s see how it’s going to work out.
+
+
+#### API
+
+When user opens a home page he receive the following data from `api.dom-dom-dom/?depth=1`
+
+```javascript
+{
+	ArrayBuffer: {
+		types: {
+			function: [
+				{family: 'Chrome', major: 24, minor: 0, patch: 1312}
+				// more browsers
+			]
+		},
+		children: {}
+	},
+
+	document: {
+		types: {
+			'object': [
+				{family: 'Firefox', major: 24, minor: 0}
+				// …
+			]
+		},
+		children: {}
+	},
+
+	window: {
+		types: {
+			link: [
+				{family: 'Chrome', major: 24, minor: 0, patch: 1312, value: '/'}
+			]
+		}
+	}
+}
+```
+
+The response has the same structure as DB with exception of Mongo’s `_id` stuff.
+
+`depth` indicates that I don’t need any children objects. Otherwise the response would be the whole DB. 
 
 
 #### Parse user agent
