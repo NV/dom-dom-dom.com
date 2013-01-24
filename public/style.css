@@ -1,0 +1,31 @@
+.dom-level {
+	padding-left: 2em;
+}
+
+.type-string {
+	background: #F7FBE6;
+	color: #697A14;
+}
+
+.type-null {
+	background: rgb(255, 244, 253);
+	color: rgb(165, 85, 168);
+}
+
+.type-number {
+	color: rgb(0, 96, 218);
+	background: rgb(232, 254, 255);
+}
+
+.type-undefined {
+	color: rgb(228, 0, 0);
+	background-color: rgb(255, 232, 232);
+}
+
+.type-function {
+
+}
+
+.type-object {
+
+}
